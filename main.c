@@ -44,19 +44,24 @@ ExecSchedule execSchedule[] = {
 
 Node *head; 
 unsigned int initTime; 
+struct timespec startTime;
+struct timespec curTime;
 
 void *Scheduler(void *arg)
 { 
-  unsigned int currentTime;
+  unsigned int timeElapsed;
 
   printf (">>>>> Scheduler starts <<<<<\n");
 
   while(1)
   { 
-    currentTime = (unsigned) time(NULL) - initTime;
-    if (currentTime >= head->refTime)
+    // currentTime = (unsigned) time(NULL) - initTime;
+    clock_gettime(CLOCK_MONOTONIC, &curTime);
+    timeElapsed =  curTime.tv_sec - startTime.tv_sec;
+
+    if (timeElapsed >= head->refTime)
     {
-      printf ("%s (%d) expires - time elasped: %d\n", head->name, head->refTime, currentTime);
+      printf ("%s (%d) expires - time elasped: %d\n", head->name, head->refTime, timeElapsed);
 
       pop(&head);
     }
@@ -68,24 +73,25 @@ void *Scheduler(void *arg)
 
 int main(void) 
 {
-  initTime = time(NULL);
+  clock_gettime(CLOCK_MONOTONIC, &startTime);
 
-  time_t uh = time(NULL);
-  printf ("...UH: %d\n", sizeof(uh));
+  // initTime = time(NULL);
 
-  struct timespec requestStart, requestEnd;
+    // struct timespec requestStart, requestEnd;
     
-    clock_gettime(CLOCK_MONOTONIC, &requestStart);
-    sleep(5);
-    clock_gettime(CLOCK_MONOTONIC, &requestEnd);
+    // clock_gettime(CLOCK_MONOTONIC, &requestStart);
+    // sleep(3);
+    // clock_gettime(CLOCK_MONOTONIC, &requestEnd);
 
-    // Calculate time it took
-    double accum = ( requestEnd.tv_sec - requestStart.tv_sec ) + (requestEnd.tv_nsec - requestStart.tv_nsec ) / BILLION;
-    printf( "%lf\n", accum );
+    // // Calculate time it took
+    // int accum = ( requestEnd.tv_sec - requestStart.tv_sec );
+
+    // // // double accum = ( requestEnd.tv_sec - requestStart.tv_sec ) + (requestEnd.tv_nsec - requestStart.tv_nsec ) / BILLION;
+    // printf( "ACCUM: %d\n", accum );
     
     
 
-// //   clock_t begin = clock();
+//   clock_t begin = clock();
 
 // // /* here, do your time-consuming job */
 // sleep(2);
@@ -102,8 +108,9 @@ int main(void)
   print(head);
 
   // push(&head, head->name, head->expiry, head->priority);
+  push(&head, execSchedule[2].type, execSchedule[2].expiry, execSchedule[1].priority);
   push(&head, execSchedule[0].type, execSchedule[0].expiry, execSchedule[0].priority);
-  push(&head, execSchedule[2].type, execSchedule[2].expiry, execSchedule[2].priority);
+  push(&head, execSchedule[3].type, execSchedule[3].expiry, execSchedule[3].priority);
 
   // sleep(3);
   pthread_create(&tId, NULL, Scheduler, NULL);

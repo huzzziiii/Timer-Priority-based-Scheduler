@@ -2,6 +2,8 @@
 
 // static int initTime;
 extern unsigned int initTime; 
+struct timespec endTime;
+extern struct timespec startTime;
 
 void print(Node *node)
 {
@@ -18,10 +20,14 @@ Node *CreateNode(char *name, unsigned int expiry, int priority)
 
   Node *node = malloc(sizeof(*node) + strlen(name) + 1);
   node->name = name;
-  int timeElapsed = (unsigned) time (NULL) - initTime;
+  clock_gettime(CLOCK_MONOTONIC, &endTime);
+  // int timeElapsed = (unsigned) time (NULL) - initTime;
+  unsigned int timeElapsed = ( endTime.tv_sec - startTime.tv_sec );
+
   // int timee
   // node->refTime = (unsigned) time (NULL) + expiry;
   node->refTime = timeElapsed + expiry;
+  // node->refTime = timeElapsed + expiry;
   node->expiry = expiry;
   node->priority = priority;
   node->nxt = NULL;

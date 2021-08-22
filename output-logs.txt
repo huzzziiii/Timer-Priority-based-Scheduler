@@ -1,0 +1,88 @@
+Create - name: ledTask, expiry: 4, refTime: 4, priority: 1,  diff: 4, timeElapsed: 0
+4 (ledTask,1,4) -> 
+=============================================
+
+Create - name: cellularTask, expiry: 5, refTime: 5, priority: 10,  diff: 5, timeElapsed: 0
+[Head] name: ledTask,       nxt: (nil), headExpiry: 4, refTime: 4
+[Temp] name: cellularTask,   nxt: (nil), headExpiry: 5, refTime: 5, Head>Tmp: 0
+
+4 (ledTask,1,4) -> 5 (cellularTask,10,5) -> 
+=============================================
+
+Create - name: batteryTask, expiry: 5, refTime: 5, priority: 1,  diff: 5, timeElapsed: 0
+[Head] name: ledTask,       nxt: 0x18086b0, headExpiry: 4, refTime: 4
+[Temp] name: batteryTask,   nxt: (nil), headExpiry: 5, refTime: 5, Head>Tmp: 0
+
+4 (ledTask,1,4) -> 5 (cellularTask,10,5) -> 5 (batteryTask,1,5) -> 
+=============================================
+
+>>>>> Scheduler starts <<<<<
+ledTask (4) expires - time elasped: 4
+....Popping node (ledTask,1,4)......
+New head: cellularTask
+Create - name: ledTask, expiry: 4, refTime: 8, priority: 1,  diff: 8, timeElapsed: 4
+[Head] name: cellularTask,       nxt: 0x18086f0, headExpiry: 5, refTime: 5
+[Temp] name: ledTask,   nxt: (nil), headExpiry: 4, refTime: 8, Head>Tmp: 1
+
+5 (cellularTask,10,5) -> 5 (batteryTask,1,5) -> 8 (ledTask,1,4) -> 
+=============================================
+
+cellularTask (5) expires - time elasped: 5
+....Popping node (cellularTask,10,5)......
+New head: batteryTask
+Create - name: cellularTask, expiry: 5, refTime: 10, priority: 10,  diff: 10, timeElapsed: 5
+[Head] name: batteryTask,       nxt: 0x1808260, headExpiry: 5, refTime: 5
+[Temp] name: cellularTask,   nxt: (nil), headExpiry: 5, refTime: 10, Head>Tmp: 0
+
+5 (batteryTask,1,5) -> 8 (ledTask,1,4) -> 10 (cellularTask,10,5) -> 
+=============================================
+
+batteryTask (5) expires - time elasped: 5
+....Popping node (batteryTask,1,5)......
+New head: ledTask
+Create - name: batteryTask, expiry: 5, refTime: 10, priority: 1,  diff: 10, timeElapsed: 5
+[Head] name: ledTask,       nxt: 0x18086b0, headExpiry: 4, refTime: 8
+[Temp] name: batteryTask,   nxt: (nil), headExpiry: 5, refTime: 10, Head>Tmp: 0
+
+8 (ledTask,1,4) -> 10 (cellularTask,10,5) -> 10 (batteryTask,1,5) -> 
+=============================================
+
+ledTask (8) expires - time elasped: 8
+....Popping node (ledTask,1,4)......
+New head: cellularTask
+Create - name: ledTask, expiry: 4, refTime: 12, priority: 1,  diff: 12, timeElapsed: 8
+[Head] name: cellularTask,       nxt: 0x18086f0, headExpiry: 5, refTime: 10
+[Temp] name: ledTask,   nxt: (nil), headExpiry: 4, refTime: 12, Head>Tmp: 1
+
+10 (cellularTask,10,5) -> 10 (batteryTask,1,5) -> 12 (ledTask,1,4) -> 
+=============================================
+
+cellularTask (10) expires - time elasped: 10
+....Popping node (cellularTask,10,5)......
+New head: batteryTask
+Create - name: cellularTask, expiry: 5, refTime: 15, priority: 10,  diff: 15, timeElapsed: 10
+[Head] name: batteryTask,       nxt: 0x1808260, headExpiry: 5, refTime: 10
+[Temp] name: cellularTask,   nxt: (nil), headExpiry: 5, refTime: 15, Head>Tmp: 0
+
+10 (batteryTask,1,5) -> 12 (ledTask,1,4) -> 15 (cellularTask,10,5) -> 
+=============================================
+
+batteryTask (10) expires - time elasped: 10
+....Popping node (batteryTask,1,5)......
+New head: ledTask
+Create - name: batteryTask, expiry: 5, refTime: 15, priority: 1,  diff: 15, timeElapsed: 10
+[Head] name: ledTask,       nxt: 0x18086b0, headExpiry: 4, refTime: 12
+[Temp] name: batteryTask,   nxt: (nil), headExpiry: 5, refTime: 15, Head>Tmp: 0
+
+12 (ledTask,1,4) -> 15 (cellularTask,10,5) -> 15 (batteryTask,1,5) -> 
+=============================================
+
+ledTask (12) expires - time elasped: 12
+....Popping node (ledTask,1,4)......
+New head: cellularTask
+Create - name: ledTask, expiry: 4, refTime: 16, priority: 1,  diff: 16, timeElapsed: 12
+[Head] name: cellularTask,       nxt: 0x18086f0, headExpiry: 5, refTime: 15
+[Temp] name: ledTask,   nxt: (nil), headExpiry: 4, refTime: 16, Head>Tmp: 1
+
+15 (cellularTask,10,5) -> 15 (batteryTask,1,5) -> 16 (ledTask,1,4) -> 
+=============================================
